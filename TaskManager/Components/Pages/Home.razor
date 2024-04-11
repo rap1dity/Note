@@ -1,0 +1,41 @@
+﻿@page "/"
+@using ViewModels.Interfaces
+@inject INotesViewModel NotesVM
+
+<h1>Notes</h1>
+
+<div class="note-list">
+    @foreach (var note in NotesVM.Notes)
+    {
+        <div
+            class="note"
+            @onclick="() => NotesVM.EditNote(note.Id.ToString())"
+            style="background-color: @note.Color"
+        >
+            <span class="note-label">
+                @note.Title
+            </span>
+            <button
+                class="delete-note"
+                @onclick="() => NotesVM.DeleteNote(note)"
+                @onclick:stopPropagation
+            >
+                X
+            </button>
+        </div>
+    }
+</div>
+
+<button
+    class="add-note"
+    @onclick="NotesVM.CreateNote"
+>
+    +
+</button>
+
+@code {
+    protected override void OnInitialized()
+    {
+        NotesVM.Initialize();
+    }
+}
